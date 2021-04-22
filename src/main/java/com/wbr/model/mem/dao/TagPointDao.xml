@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wbr.model.mem.dao.TagPointDao">
+
+    <resultMap id="BaseResultMap" type="com.wbr.model.mem.vo.TagPoint" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="equipment_number" property="equipmentNumber" jdbcType="VARCHAR" />
+        <result column="equipment_code" property="equipmentCode" jdbcType="VARCHAR" />
+        <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+        <result column="tag_comment" property="tagComment" jdbcType="VARCHAR" />
+        <result column="org_tag_name" property="orgTagName" jdbcType="VARCHAR" />
+        <result column="tag_unit" property="tagUnit" jdbcType="VARCHAR" />
+        <result column="scale_factor" property="scaleFactor" jdbcType="DOUBLE" />
+        <result column="intercept" property="intercept" jdbcType="DOUBLE" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="creator" property="creator" jdbcType="VARCHAR" />
+        <result column="max_value" property="maxValue" jdbcType="DOUBLE" />
+        <result column="min_value" property="minValue" jdbcType="DOUBLE" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, equipment_number, equipment_code, tag_name, tag_comment, org_tag_name, tag_unit,
+        scale_factor, intercept, create_time, creator, max_value, min_value
+    </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tag_point ORDER BY equipment_code,tag_name
+    </select>
+
+    <update id="updateByPrimaryKey">
+        update tag_point
+        <set >
+            <if test="equipmentNumber != null" >
+                equipment_number = #{equipmentNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="equipmentCode != null" >
+                equipment_code = #{equipmentCode,jdbcType=VARCHAR},
+            </if>
+            <if test="tagName != null" >
+                tag_name = #{tagName,jdbcType=VARCHAR},
+            </if>
+            <if test="tagComment != null" >
+                tag_comment = #{tagComment,jdbcType=VARCHAR},
+            </if>
+            <if test="orgTagName != null" >
+                org_tag_name = #{orgTagName,jdbcType=VARCHAR},
+            </if>
+            <if test="tagUnit != null" >
+                tag_unit = #{tagUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="scaleFactor != null" >
+                scale_factor = #{scaleFactor,jdbcType=DOUBLE},
+            </if>
+            <if test="intercept != null" >
+                intercept = #{intercept,jdbcType=DOUBLE},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null" >
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="maxValue != null" >
+                max_value = #{maxValue,jdbcType=DOUBLE},
+            </if>
+            <if test="minValue != null" >
+                min_value = #{minValue,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="com.wbr.model.mem.vo.TagPoint">
+        insert into tag_point (id, equipment_number, equipment_code,
+          tag_name, tag_comment, org_tag_name,
+          tag_unit, scale_factor, intercept,
+          create_time, creator, max_value, min_value)
+        values (#{id,jdbcType=VARCHAR}, #{equipmentNumber,jdbcType=VARCHAR}, #{equipmentCode,jdbcType=VARCHAR},
+          #{tagName,jdbcType=VARCHAR}, #{tagComment,jdbcType=VARCHAR}, #{orgTagName,jdbcType=VARCHAR},
+          #{tagUnit,jdbcType=VARCHAR}, #{scaleFactor,jdbcType=DOUBLE}, #{intercept,jdbcType=DOUBLE},
+          #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{maxValue,jdbcType=DOUBLE}, #{minValue,jdbcType=DOUBLE})
+    </insert>
+
+</mapper>

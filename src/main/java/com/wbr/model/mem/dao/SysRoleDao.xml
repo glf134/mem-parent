@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wbr.model.mem.dao.SysRoleDao">
+
+    <resultMap id="BaseResultMap" type="com.wbr.model.mem.vo.SysRole">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <collection property="sysMenuPermissions" javaType="ArrayList" ofType="com.wbr.model.mem.vo.SysMenuPermission"
+                    column="id"  select="com.wbr.model.mem.dao.SysMenuPermissionDao.selectPermissionByRole"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+         id, code, name, create_time, update_time
+    </sql>
+
+  <!--  <select id="selectPermissionByRole" resultMap="com.cnooc.cpoc.model.emm.dao.SysMenuPermissionDao.BaseResultMap" parameterType="java.lang.String">
+        select sys_menu_permission.* from sys_menu_permission
+        left join sys_role_permission sysRolePermission on sys_menu_permission.id=sysRolePermission.menu_permission_id
+        where sysRolePermission.role_id = #{id,jdbcType=VARCHAR} order by sys_menu_permission.struId
+    </select>-->
+
+    <select id="selectRoleByUser" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select sys_role.* from sys_role
+        left join sys_role_user sysRoleUser on sys_role.id=sysRoleUser.role_id
+        where sysRoleUser.user_id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select <include refid="Base_Column_List" /> from sys_role where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List" /> from sys_role order by sys_role.code,sys_role.create_time
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+     delete from sys_role where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.wbr.model.mem.vo.SysRole" >
+        insert into sys_role (id, code, name, 
+          create_time, update_time)
+        values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+          #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.wbr.model.mem.vo.SysRole" >
+        update sys_role
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.code != null" >
+                code = #{record.code,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null" >
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null" >
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateTime != null" >
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+</mapper>
